@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Premium Nexus UI</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100 font-sans relative overflow-x-hidden">
+
+    <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-600/5 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-600/5 rounded-full blur-3xl pointer-events-none"></div>
+
+    <nav class="border-b border-slate-900 bg-slate-900/40 backdrop-blur-md sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
+        
+        <div class="relative inline-block text-left" id="profile-dropdown-container">
+            <button id="profile-menu-btn" class="flex items-center gap-3 focus:outline-none group cursor-pointer">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold shadow-md shadow-indigo-500/20 ring-2 ring-indigo-500/20 group-hover:ring-indigo-400/50 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                    </svg>
+                </div>
+                <span class="font-bold text-base tracking-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent hidden sm:inline-block">My Account</span>
+            </button>
+
+            <div id="profile-dropdown-menu" class="hidden absolute left-0 mt-3 w-52 bg-slate-900 border border-slate-800 rounded-xl shadow-2xl z-50 overflow-hidden animate__animated animate__fadeIn animate__faster">
+                <div class="px-4 py-3 border-b border-slate-800/80 bg-slate-950/40">
+                    <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Navigation</p>
+                </div>
+                <button id="dropdown-edit-btn" class="w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-300 hover:bg-indigo-600/10 hover:text-indigo-400 text-left transition cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                    </svg>
+                    Edit Profile
+                </button>
+            </div>
+        </div>
+        <button onclick="window.location.href='admission.html'" class="relative inline-flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-indigo-600 to-violet-600 rounded-xl overflow-hidden shadow-xl shadow-indigo-600/30 transition-all duration-300 hover:from-indigo-500 hover:to-violet-500 hover:scale-105 hover:shadow-indigo-500/50 active:scale-95 cursor-pointer group">
+    <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-indigo-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md -z-10 animate-pulse"></span>
+    <span>Enroll Now</span>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
+    </svg>
+</button>
+   
+</div>
+        <button id="logout-btn" class="bg-slate-800/80 hover:bg-red-500/20 hover:text-red-400 border border-slate-700/60 hover:border-red-500/30 px-4 py-2 rounded-xl text-sm font-medium transition-all cursor-pointer active:scale-95">
+            Logout
+        </button>
+    </nav>
+
+    <main class="max-w-7xl mx-auto p-6 md:p-10 animate__animated animate__fadeIn">
+        
+        <div class="bg-gradient-to-r from-slate-900 to-indigo-950/40 border border-slate-800 rounded-2xl p-8 shadow-xl relative overflow-hidden mb-8">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none"></div>
+            
+            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">
+                Welcome back, <span id="user-name" class="bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">Loading...</span>! 👋
+            </h1>
+            <p class="text-slate-400 text-sm mt-2">Logged in as: <span id="user-email" class="text-indigo-300 font-mono">loading@example.com</span></p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 shadow-md">
+                <div class="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Account Security</div>
+                <div class="text-2xl font-bold text-emerald-400">Verified</div>
+                <p class="text-xs text-slate-400 mt-1">Your connection to Supabase is secure.</p>
+            </div>
+            
+            <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 shadow-md">
+                <div class="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Session Status</div>
+                <div class="text-2xl font-bold text-indigo-400">Active</div>
+                <p class="text-xs text-slate-400 mt-1">Token refreshed automatically.</p>
+            </div>
+
+            <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 shadow-md">
+                <div class="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">System Analytics</div>
+                <div class="text-2xl font-bold text-purple-400">100%</div>
+                <p class="text-xs text-slate-400 mt-1">All internal modules operational.</p>
+            </div>
+        </div>
+
+        <div id="profile-section" class="hidden bg-slate-900/60 border border-slate-800 rounded-2xl p-6 shadow-md mb-8 animate__animated animate__fadeIn">
+            <h3 class="text-2xl font-bold mb-4 text-purple-400">Update Profile</h3>
+            <form id="update-profile-form" class="flex flex-col gap-4 max-w-md">
+                <div>
+                    <label for="profile-name" class="block text-sm font-medium text-slate-400 mb-1.5">Full Name</label>
+                    <input type="text" id="profile-name" placeholder="Enter your name" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 outline-none focus:border-indigo-500 transition">
+                </div>
+                <div>
+                    <label for="profile-email" class="block text-sm font-medium text-slate-400 mb-1.5">Email</label>
+                    <input type="email" id="profile-email" placeholder="Enter your email" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 outline-none focus:border-indigo-500 transition">
+                </div>
+                <div>
+                    <label for="profile-password" class="block text-sm font-medium text-slate-400 mb-1.5">New Password</label>
+                    <input type="password" id="profile-password" placeholder="Enter new password" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 outline-none focus:border-indigo-500 transition">
+                </div>
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-3 rounded-xl font-semibold transition active:scale-95 self-start cursor-pointer">
+                    Save Changes
+                </button>
+            </form>
+            <p id="update-message" class="mt-3 text-sm text-emerald-400 font-medium"></p>
+        </div>
+<div class="create-post-container" style="background: #0d0d21; padding: 25px; border-radius: 16px; border: 1px solid #1e1e38; max-width: 768px; margin: 20px auto;">
+    <h2 style="color: #6366f1; font-size: 22px; font-weight: bold; margin-bottom: 20px;">Create New Post</h2>
+    
+    <input type="text" id="title" placeholder="Post Title" style="width: 100%; padding: 14px; background: #070714; border: 1px solid #1e1e38; border-radius: 10px; color: white; margin-bottom: 16px; box-sizing: border-box; outline: none;" />
+    
+    <textarea id="content" placeholder="Write your post..." rows="5" style="width: 100%; padding: 14px; background: #070714; border: 1px solid #1e1e38; border-radius: 10px; color: white; margin-bottom: 20px; box-sizing: border-box; resize: vertical; outline: none;"></textarea>
+    
+    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
+        
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <input type="file" id="file-input" style="display: none;" accept="image/*" />
+            
+            <button type="button" id="custom-file-btn" style="background-color: #1e1e38; color: #a5b4fc; border: 1px solid #4f46e5; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 6px; transition: all 0.2s;">
+                📎 Add File
+            </button>
+            
+            <span id="file-name-preview" style="color: #64748b; font-size: 13px; font-weight: 500;">No file chosen</span>
+        </div>
+
+        <button id="publish-btn" type="button" style="background-color: #4f46e5; color: white; border: none; padding: 11px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.2s;">
+            Publish Post
+        </button>
+    </div>
+</div>
+<div id="posts"></div>
+
+
+    </main>
+
+    <script src="app.js" defer></script>
+</body>
+</html>

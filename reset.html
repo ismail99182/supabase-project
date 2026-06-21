@@ -1,0 +1,175 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Forgot Password</title>
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+
+  body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+  }
+
+  .card {
+    width: 360px;
+    padding: 30px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    color: #fff;
+  }
+
+  .card h2 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .card p {
+    text-align: center;
+    font-size: 13px;
+    opacity: 0.9;
+    margin-bottom: 20px;
+  }
+
+  input {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    outline: none;
+    border-radius: 8px;
+    margin-bottom: 15px;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #00c6ff;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  button:hover {
+    background: #0072ff;
+    transform: translateY(-2px);
+  }
+
+  .link {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 13px;
+  }
+
+  .link a {
+    color: #fff;
+    text-decoration: underline;
+  }
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h2>Forgot Password</h2>
+  <p>Enter your email and we will send reset link</p>
+
+  <input type="email" placeholder="Enter your email" id="forgetpass-input">
+
+  <button id="resetpass-btn">Send Reset Link</button>
+  <div id="resetemail">
+  <div class="link">
+    <a href="index.html">Back to Login</a>
+  </div>
+</div>
+</div>
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="app.js"></script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password - Nexus UI</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="flex min-h-full flex-col justify-center px-4 py-12 sm:px-6 lg:px-8 bg-slate-950 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black selection:bg-purple-500/30">
+
+    <div class="sm:mx-auto w-full max-w-md">
+        <!-- Main Card Container (Glassmorphism Match) -->
+        <div class="bg-slate-900/40 backdrop-blur-xl border border-slate-900/80 rounded-2xl p-6 sm:p-10 shadow-2xl relative overflow-hidden before:absolute before:top-0 before:left-0 before:w-full before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-slate-700/50 before:to-transparent">
+            
+            <!-- Header Icon & Text -->
+            <div class="flex flex-col items-center mb-6">
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20 mb-4 shadow-inner">
+                    <!-- Key/Lock Reset Icon -->
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.02 5.912L9 17.25H7.5v-1.5M6 18.75L4.5 20.25m11.25-15a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+                </div>
+                <h2 class="text-center text-2xl font-bold tracking-tight text-white sm:text-3xl">Forgot Password</h2>
+                <p class="mt-2 text-center text-xs sm:text-sm text-slate-400 max-w-xs leading-relaxed">Enter your email and we will send you a secure link to reset your password.</p>
+            </div>
+
+            <!-- Input & Button Form -->
+            <div class="space-y-4">
+                <div>
+                    <label for="forgetpass-input" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Email Address</label>
+                    <div class="relative rounded-xl shadow-sm">
+                        <input type="email" placeholder="name@example.com" id="forgetpass-input" 
+                            class="block w-full rounded-xl border border-slate-800 bg-slate-950/60 py-3 px-4 text-slate-200 placeholder-slate-600 focus:border-purple-500 focus:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-purple-500/20 transition duration-200 text-sm">
+                    </div>
+                </div>
+
+                <!-- Premium Gradient Action Button -->
+                <button id="resetpass-btn" type="button" 
+                    class="flex w-full justify-center items-center rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 py-3 px-4 text-sm font-semibold text-white shadow-lg shadow-purple-500/20 hover:shadow-purple-500/30 transition duration-300 cursor-pointer active:scale-[0.98]">
+                    Send Reset Link
+                </button>
+
+                <!-- Navigation Divider -->
+                <div class="relative my-6">
+                    <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                        <div class="w-full border-t border-slate-800/80"></div>
+                    </div>
+                </div>
+
+                <!-- Back to Login Link -->
+                <div id="resetemail" class="text-center mt-2">
+                 <a href="index.html" class="inline-flex w-full justify-center items-center gap-2 rounded-xl border border-slate-800 bg-slate-950/20 hover:bg-slate-950/60 hover:border-slate-700 py-3 px-4 text-sm font-semibold text-slate-400 hover:text-white transition duration-200 active:scale-[0.98]">
+                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"></path>
+            </svg>
+        Return to Sign In
+    </a>
+</div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="app.js"></script>
+</body>
+</html>
