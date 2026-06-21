@@ -8,8 +8,8 @@ const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
 // // --- 2. OAuth Social Logins (Google, GitHub, Facebook) ---
   async function loginWithProvider(provider) {
-    // window.location.origin khud hi localhost ya github pages ka URL dynamically utha lega
-    const redirectUrl = window.location.origin + '/dashbord.html';
+    // Isse exact live link banega: https://ismail99182.github.io/supabase-project/dashbord.html
+    const redirectUrl = window.location.origin + '/supabase-project/dashbord.html';
 
     const { error } = await _supabase.auth.signInWithOAuth({ 
         provider: provider, 
