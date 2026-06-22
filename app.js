@@ -1,6 +1,6 @@
 
 // // --- 1. Supabase Connection Configuration ---
-const supabaseUrl = 'https://aezucynevfjlrknmqqlg.supabase.co';
+const supabaseUrl = 'https://aezucynevfjlknmqqlg.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlenVjeW5ldmZqbHJrbm1xcWxnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NTMyMzAsImV4cCI6MjA5NjIyOTIzMH0.skfqRrv8ZSk_VWo7h_5KfJvhVy7XPLe0i_T7dC5_x0A';
 
 // Browser standard client setup
