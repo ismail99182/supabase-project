@@ -7,9 +7,13 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
 // // --- 2. OAuth Social Logins (Google, GitHub, Facebook) ---
-  async function loginWithProvider(provider) {
-    // window.location.origin khud hi localhost ya github pages ka URL dynamically utha lega
-    const redirectUrl = window.location.origin + '/dashbord.html';
+async function loginWithProvider(provider) {
+    let redirectUrl = window.location.origin + '/dashbord.html';
+
+    // Agar site GitHub Pages par chal rahi hai, toh repo ka naam automatic add ho jaye
+    if (window.location.hostname.includes('github.io')) {
+        redirectUrl = window.location.origin + '/supabase-project/dashbord.html';
+    }
 
     const { error } = await _supabase.auth.signInWithOAuth({ 
         provider: provider, 
