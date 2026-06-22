@@ -1,7 +1,7 @@
 
 // // --- 1. Supabase Connection Configuration ---
 const supabaseUrl = 'https://aezucynevfjlrknmqqlg.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlenVjeW5ldmZqbHJrbm1xcWxnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NTMyMzAsImV4cCI6MjA5NjIyOTIzMH0.skfqRrv8ZSk[...]
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlenVjeW5ldmZqbHJrbm1xcWxnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NTMyMzAsImV4cCI6MjA5NjIyOTIzMH0.skfqRrv8ZSk_VWo7h_5KfJvhVy7XPLe0i_T7dC5_x0A';
 
 // Browser standard client setup
 const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
@@ -12,17 +12,16 @@ async function handleOAuthCallback() {
         const { data, error } = await _supabase.auth.getSession();
         
         if (error) {
-            console.error("❌ OAuth Callback Error:", error);
+            console.error("OAuth Callback Error:", error);
             return;
         }
         
         if (data?.session) {
-            console.log("✅ OAuth session captured successfully:", data.session.user.email);
-            // Session is now stored in localStorage automatically
+            console.log("OAuth session captured successfully:", data.session.user.email);
             return;
         }
     } catch (err) {
-        console.error("❌ Critical OAuth Callback Error:", err);
+        console.error("Critical OAuth Callback Error:", err);
     }
 }
 
@@ -36,8 +35,7 @@ if (document.readyState === 'loading') {
 // ===== LISTEN TO AUTH STATE CHANGES =====
 _supabase.auth.onAuthStateChange(async (event, session) => {
     if (event === 'SIGNED_IN') {
-        console.log("✅ User signed in via OAuth:", session.user.email);
-        // Auto-redirect to dashboard on OAuth success
+        console.log("User signed in via OAuth:", session.user.email);
         if (window.location.pathname.includes('index.html') || window.location.pathname.endsWith('/')) {
             setTimeout(() => {
                 window.location.href = 'dashbord.html';
@@ -45,21 +43,18 @@ _supabase.auth.onAuthStateChange(async (event, session) => {
         }
     } else if (event === 'SIGNED_OUT') {
         console.log("User signed out");
-    } else if (event === 'USER_UPDATED') {
-        console.log("User updated");
     }
 });
 
 // // --- 2. OAuth Social Logins (Google, GitHub, Facebook) ---
 async function loginWithProvider(provider) {
     try {
-        // Dynamic redirect URL that works on any domain (GitHub Pages, localhost, production)
         const currentPath = window.location.pathname;
         const basePath = currentPath.substring(0, currentPath.lastIndexOf('/'));
         const redirectUrl = window.location.origin + basePath + '/dashbord.html';
         
-        console.log("🔐 OAuth Redirect URL:", redirectUrl);
-        console.log("🔐 Provider:", provider);
+        console.log("OAuth Redirect URL:", redirectUrl);
+        console.log("Provider:", provider);
 
         const { error } = await _supabase.auth.signInWithOAuth({ 
             provider: provider, 
@@ -69,13 +64,13 @@ async function loginWithProvider(provider) {
         });
 
         if (error) {
-            console.error("❌ OAuth Error Details:", error.message, error);
+            console.error("OAuth Error Details:", error.message, error);
             alert(provider + " Authentication Failed!\n\nError: " + error.message + "\n\nPlease check:\n1. Supabase OAuth is enabled\n2. Redirect URL matches Supabase settings\n3. Provider credentials are correct");
         } else {
-            console.log("✅ OAuth redirect initiated for", provider);
+            console.log("OAuth redirect initiated for", provider);
         }
     } catch (err) {
-        console.error("❌ Critical OAuth Exception:", err);
+        console.error("Critical OAuth Exception:", err);
         alert("Critical Error: " + err.message);
     }
 }
@@ -105,10 +100,10 @@ if (signupForm) {
         });
 
         if (error) {
-            console.error("❌ Signup Error:", error.message, error);
+            console.error("Signup Error:", error.message, error);
             alert("Signup Issue: " + error.message);
         } else {
-            console.log("✅ Signup successful for:", email);
+            console.log("Signup successful for:", email);
             await _supabase.auth.signOut(); 
             
             alert("Account successfully created! Please check your email for confirmation link.");
@@ -132,10 +127,10 @@ if (loginForm) {
         });
 
         if (error) {
-            console.error("❌ Login Error:", error.message, error);
+            console.error("Login Error:", error.message, error);
             alert("Login Failed: " + error.message);
         } else {
-            console.log("✅ Login successful for:", email);
+            console.log("Login successful for:", email);
             window.location.href = 'dashbord.html';
         }
     });
@@ -147,10 +142,10 @@ if (logoutBtn) {
     logoutBtn.addEventListener('click', async () => {
         const { error } = await _supabase.auth.signOut();
         if (error) {
-            console.error("❌ Logout Error:", error.message, error);
+            console.error("Logout Error:", error.message, error);
             alert("Logout Error: " + error.message);
         } else {
-            console.log("✅ Logged out successfully");
+            console.log("Logged out successfully");
             alert("Logged out successfully!");
             window.location.href = 'index.html';
         }
@@ -169,12 +164,12 @@ async function protectDashboard() {
         const { data, error } = await _supabase.auth.getSession();
 
         if (!data.session || error) {
-            console.warn("⚠️ No session found, redirecting to login");
+            console.warn("No session found, redirecting to login");
             alert("Please login first to access the dashboard!");
             window.location.href = 'index.html';
         } else {
             const user = data.session.user;
-            console.log("✅ Dashboard protected: user authenticated as", user.email);
+            console.log("Dashboard protected: user authenticated as", user.email);
             
             const profileNameInput = document.getElementById('profile-name');
             const profileEmailInput = document.getElementById('profile-email');
@@ -195,7 +190,7 @@ async function protectDashboard() {
     else if (currentPath.includes('index.html') || currentPath === '/' || currentPath.endsWith('/')) {
         const { data } = await _supabase.auth.getSession();
         if (data?.session) {
-            console.log("✅ User already logged in, redirecting to dashboard");
+            console.log("User already logged in, redirecting to dashboard");
             window.location.href = 'dashbord.html';
         }
     }
@@ -221,12 +216,11 @@ if (resetpassbtn) {
     }
 
     try {
-        // Use dynamic domain for password reset (must match Supabase settings)
         const currentPath = window.location.pathname;
         const basePath = currentPath.substring(0, currentPath.lastIndexOf('/'));
         const resetRedirectUrl = window.location.origin + basePath + '/reset.html';
 
-        console.log("🔐 Password Reset Redirect URL:", resetRedirectUrl);
+        console.log("Password Reset Redirect URL:", resetRedirectUrl);
 
         const { data, error } =
           await _supabase.auth.resetPasswordForEmail(
@@ -237,7 +231,7 @@ if (resetpassbtn) {
           );
 
         if (error) {
-          console.error("❌ Password Reset Error:", error.message, error);
+          console.error("Password Reset Error:", error.message, error);
           Swal.fire({
             icon: "error",
             title: "Error",
@@ -246,7 +240,7 @@ if (resetpassbtn) {
           return;
         }
 
-        console.log("✅ Password reset email sent successfully");
+        console.log("Password reset email sent successfully");
         Swal.fire({
           icon: "success",
           title: "Sent!",
@@ -255,7 +249,7 @@ if (resetpassbtn) {
 
         document.getElementById('forgetpass-input').value = "";
     } catch (err) {
-        console.error("❌ Critical Password Reset Error:", err);
+        console.error("Critical Password Reset Error:", err);
         Swal.fire({
             icon: "error",
             title: "Error",
@@ -291,7 +285,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
     
-    // Form submission binding
     const publishBtn = document.getElementById("publish-btn");
     if (publishBtn) {
         publishBtn.addEventListener("click", addPost);
@@ -318,7 +311,6 @@ async function addPost() {
 
     let publicUrl = null; 
 
-    // FILE UPLOAD LOGIC
     if (fileInput && fileInput.files.length > 0) {
         const file = fileInput.files[0];
         const fileExt = file.name.split('.').pop();
@@ -331,7 +323,7 @@ async function addPost() {
             .upload(filePath, file);
 
         if (storageError) {
-            console.error("❌ Storage Upload Error:", storageError.message, storageError);
+            console.error("Storage Upload Error:", storageError.message, storageError);
             alert("Storage Upload Error: " + storageError.message);
             return;
         }
@@ -341,16 +333,14 @@ async function addPost() {
             .getPublicUrl(filePath);
             
         publicUrl = urlData.publicUrl;
-        console.log("✅ File uploaded successfully. URL:", publicUrl);
+        console.log("File uploaded successfully. URL:", publicUrl);
     }
 
-    // USER SESSION FETCHING
     const { data: { session } } = await _supabase.auth.getSession();
     const currentUserName = session?.user?.user_metadata?.full_name || "Anonymous User";
 
     console.log("Inserting post into database...");
     
-    // DATABASE INSERTS
     const { error: dbError } = await _supabase
         .from("posts")
         .insert([
@@ -363,12 +353,12 @@ async function addPost() {
         ]);
 
     if (dbError) {
-        console.error("❌ Database Error:", dbError.message, dbError);
+        console.error("Database Error:", dbError.message, dbError);
         alert("Database Error: " + dbError.message);
         return;
     }
 
-    console.log("✅ Post published successfully");
+    console.log("Post published successfully");
     alert("Post published successfully! 🎉");
 
     if (titleInput) titleInput.value = "";
@@ -380,18 +370,11 @@ async function addPost() {
 }
 
 async function loadPosts() {
-const urlParams = new URLSearchParams(window.location.search);
-const singlePostId = urlParams.get('post');
+    const urlParams = new URLSearchParams(window.location.search);
+    const singlePostId = urlParams.get('post');
 
-if (singlePostId) {
-    // Agar URL mein post ID hai, to Supabase se sirf wahi ek post fetch karein:
-    // .from("posts").select("*").eq("id", singlePostId)
-} else {
-    // Warna normal saari posts fetch karein jaise pehle ho rahi hain
-}
     const postsContainer = document.getElementById("posts");
     if (!postsContainer) return;
-    
 
     const { data: { session } } = await _supabase.auth.getSession();
     const loggedInUserName = session?.user?.user_metadata?.full_name || "Nexus User";
@@ -402,7 +385,7 @@ if (singlePostId) {
         .order("id", { ascending: false }); 
 
     if (error) {
-        console.error("❌ Error loading posts:", error.message, error);
+        console.error("Error loading posts:", error.message, error);
         return;
     }
 
@@ -436,10 +419,9 @@ if (singlePostId) {
 
         postsContainer.innerHTML += `
         <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 shadow-xl hover:border-slate-700/50 transition-all duration-300">
-            
             <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center font-bold text-white text-sm shadow-md shadow-indigo-500/10[...]
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center font-bold text-white text-sm shadow-md shadow-indigo-500/10">
                         ${initials}
                     </div>
                     <div>
@@ -447,45 +429,38 @@ if (singlePostId) {
                         <p class="text-[11px] text-slate-500 font-medium">${postDate}</p>
                     </div>
                 </div>
-                
                 <button class="text-slate-600 hover:text-slate-400 transition cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1[...]
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
                     </svg>
                 </button>
             </div>
-
             <div class="space-y-2 mb-4">
                 <h3 class="text-lg font-bold text-indigo-400 tracking-tight">${post.title}</h3>
                 <p class="text-slate-300 text-sm leading-relaxed whitespace-pre-wrap">${post.content}</p>
                 ${imageHTML}
             </div>
-
             <div class="border-t border-slate-800/60 my-3"></div>
-
             <div class="flex items-center justify-between px-2 pt-1 text-slate-400 text-xs font-semibold">
-                <button onclick="toggleLike(this)" data-likes="${initialLikes}" class="flex items-center gap-2 hover:text-rose-400 transition cursor-pointer py-1 px-3 rounded-lg hover:bg-rose-500[...]
+                <button onclick="toggleLike(this)" data-likes="${initialLikes}" class="flex items-center gap-2 hover:text-rose-400 transition cursor-pointer py-1 px-3 rounded-lg hover:bg-rose-500/10 group active:scale-90">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 group-hover:scale-110 transition heart-icon">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 [...]
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 13.5 9 13.5s9-6.28 9-13.5Z" />
                     </svg>
                     <span class="like-count">${initialLikes} Likes</span>
                 </button>
-
-                <button onclick="addCommentPrompt(this)" data-comments="${initialComments}" class="flex items-center gap-2 hover:text-indigo-400 transition cursor-pointer py-1 px-3 rounded-lg hov[...]
+                <button onclick="addCommentPrompt(this)" data-comments="${initialComments}" class="flex items-center gap-2 hover:text-indigo-400 transition cursor-pointer py-1 px-3 rounded-lg hover:bg-indigo-500/10 group active:scale-90">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 group-hover:scale-110 transition">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48L4.5 21l3.75-1.5c1.1.34 [...]
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48L4.5 21l3.75-1.5c1.1.34 2.133.652 3.19.918H12Z" />
                     </svg>
                     <span class="comment-count">${initialComments} Comments</span>
                 </button>
-
-                <button onclick="sharePostLink('${post.id}')" class="flex items-center gap-2 hover:text-emerald-400 transition cursor-pointer py-1 px-3 rounded-lg hover:bg-emerald-500/5 group act[...]
+                <button onclick="sharePostLink('${post.id}')" class="flex items-center gap-2 hover:text-emerald-400 transition cursor-pointer py-1 px-3 rounded-lg hover:bg-emerald-500/5 group active:scale-90">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 group-hover:scale-110 transition">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.[...]
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 5.314-5.896 5.896m5.896-5.896 2.121-2.121m-2.121 2.121L2.75 19.75m12.121-12.121L21.25 4.25" />
                     </svg>
                     <span>Share</span>
                 </button>
             </div>
-
         </div>
         `;
     });
@@ -496,7 +471,7 @@ if (window.location.pathname.includes("dashbord.html")) {
 }
 
 // ==========================================
-// POST INTERACTION SYSTEM (GLOBAL BINDINGS FIXED)
+// POST INTERACTION SYSTEM
 // ==========================================
 
 window.toggleLike = function(button) {
@@ -533,19 +508,16 @@ window.addCommentPrompt = function(button) {
         alert("Comment added successfully! (Local Feed)");
     }
 };
+
 window.sharePostLink = function(postId) {
     if (!postId) {
         alert("Post ID not found!");
         return;
     }
 
-    // Yeh aapki current website ka domain aur path le aayega (e.g., http://127.0.0.1:5500/dashbord.html)
     const baseUrl = window.location.origin + window.location.pathname;
-    
-    // Dynamic URL banayein specific post param ke sath
     const postUrl = `${baseUrl}?post=${postId}`;
 
-    // Navigator API ka use karke clipboard par real copy karein
     navigator.clipboard.writeText(postUrl)
         .then(() => {
             alert("Specific post link copied to clipboard! 🚀");
@@ -614,11 +586,11 @@ if (updateProfileForm) {
         const { data, error } = await _supabase.auth.updateUser(updateData);
 
         if (error) {
-            console.error("❌ Profile Update Error:", error.message, error);
+            console.error("Profile Update Error:", error.message, error);
             updateMessage.style.color = "#f87171"; 
             updateMessage.innerText = "Update Failed: " + error.message;
         } else {
-            console.log("✅ Profile updated successfully");
+            console.log("Profile updated successfully");
             updateMessage.style.color = "#34d399"; 
             
             if (newEmail && data.user.new_email) {
