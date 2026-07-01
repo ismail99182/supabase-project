@@ -57,7 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
         admissionForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // Live status text alert
             alert("Form submit ho raha hai! Supabase se connect karne ki koshish jaari hai...");
 
             if (!_supabase) {
@@ -66,20 +65,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             try {
-                // Form Fields se data get kar rahe hain
                 const name = document.getElementById('student-name').value;
                 const fatherName = document.getElementById('father-name').value;
                 const email = document.getElementById('student-email').value;
                 const mobileNumber = document.getElementById('mobile-number').value;
-                const campus = document.getElementById('campus').value; // NEW
-                const course = document.getElementById('course').value; // NEW
+                const campus = document.getElementById('campus').value; 
+                const course = document.getElementById('course').value; 
                 const gender = document.getElementById('gender').value;
                 const city = document.getElementById('city').value;
 
                 console.log("Submitting to Supabase:", { name, fatherName, email, mobileNumber, campus, course, gender, city });
 
-                // Supabase Data Insertion Request
-                // Note: Aapke table ka naam exact 'admisson data' (single 's') hai schema ke mutabiq
                 const { data, error } = await _supabase
                     .from('admisson data') 
                     .insert([
@@ -88,15 +84,14 @@ document.addEventListener('DOMContentLoaded', () => {
                             father_name: fatherName,
                             email: email,
                             mobile_number: mobileNumber,
-                            campus: campus,   // NEW COLUMN IN DB
-                            course: course,   // NEW COLUMN IN DB
+                            campus: campus,   
+                            course: course,   
                             gender: gender,
                             city: city
                         }
                     ])
                     .select();
 
-                // Validation and Response
                 if (error) {
                     console.error("Database Response Error:", error);
                     alert("Database Error Received:\n" + error.message + "\nDetails: " + (error.details || 'None'));
@@ -134,11 +129,10 @@ async function searchStudentIDCard() {
     }
 
     try {
-        // Supabase se input mobile number ke against data fetch karna
         const { data, error } = await _supabase
             .from('admisson data')
             .select('*')
-            .eq('mobile_number', mobileInput); // Mobile number column match sequence
+            .eq('mobile_number', mobileInput); 
 
         if (error) {
             console.error("Fetch Error:", error);
@@ -146,21 +140,25 @@ async function searchStudentIDCard() {
             return;
         }
 
-        // Agar user ka record table mein mil jata hai
         if (data && data.length > 0) {
             const student = data[0];
             
-            // Dynamic Roll number matching index create karna base on table id or randomizer
             const mockRoll = `NX-2026-${1000 + (student.id % 9000 || Math.floor(Math.random() * 8000))}`;
 
-            // Fields update karna
+            // Fields update karna (Existing Fields)
             document.getElementById('card-roll').innerText = mockRoll;
             document.getElementById('card-name').innerText = student.name || '---';
             document.getElementById('card-father').innerText = student.father_name || '---';
             document.getElementById('card-mobile').innerText = student.mobile_number || '---';
             document.getElementById('card-city').innerText = student.city || '---';
+            
+            // NEW FIELDS SHOW ON ID CARD LOGIC
+            const cardCampus = document.getElementById('card-campus');
+            const cardCourse = document.getElementById('card-course');
+            
+            if(cardCampus) cardCampus.innerText = student.campus || '---';
+            if(cardCourse) cardCourse.innerText = student.course || '---';
 
-            // UI view toggling: Search hiding and Card showing
             document.getElementById('search-card-container').classList.add('hidden');
             document.getElementById('id-card-display-area').classList.remove('hidden');
         } else {
@@ -173,7 +171,6 @@ async function searchStudentIDCard() {
     }
 }
 
-// Reset view to search again
 function resetSearchArea() {
     document.getElementById('search-mobile').value = "";
     document.getElementById('id-card-display-area').classList.add('hidden');
@@ -190,27 +187,20 @@ function printIDCard() {
         return;
     }
 
-    // Purane kisi bhi dynamic styles ko pehle remove karna safety ke liye
     const oldStyle = document.getElementById('dynamic-print-css');
     if (oldStyle) oldStyle.remove();
 
-    // Naya structural sheet optimization rule create karna
     const printStyle = document.createElement('style');
     printStyle.id = 'dynamic-print-css';
     printStyle.innerHTML = `
         @media print {
-            /* Page margins aur content cut-off ko default standard par zero karna */
             @page {
                 size: auto;
                 margin: 0mm;
             }
-            
-            /* Poori screen ke content ko rigid format se clean hide karna */
             body * {
                 visibility: hidden !important;
             }
-            
-            /* Print context ko layout container system banana */
             html, body {
                 visibility: hidden !important;
                 background-color: #030712 !important;
@@ -225,35 +215,27 @@ function printIDCard() {
                 padding: 0 !important;
                 overflow: hidden !important;
             }
-            
-            /* Target card aur uske internal elements ko enforce visualization dena */
             #student-id-card, #student-id-card * {
                 visibility: visible !important;
             }
-            
-            /* Card scaling and exact center orientation bypass logic */
             #student-id-card {
                 position: relative !important;
                 display: block !important;
                 margin: auto !important;
-                max-width: 310px !important; /* Margin safe lock */
+                max-width: 310px !important;
                 border: none !important;
                 box-shadow: none !important;
-                transform: scale(1.0) !important; /* Kisi bhi zoom distortion ko zero karne ke liye */
+                transform: scale(1.0) !important;
                 left: 0 !important;
                 top: 0 !important;
             }
         }
     `;
 
-    // Rules inject karna
     document.head.appendChild(printStyle);
     
-    // 150ms ka browser transition safe-buffer gap
     setTimeout(() => {
         window.print();
-        
-        // Output phase complete hone par runtime logic restore karna
         const injectedStyle = document.getElementById('dynamic-print-css');
         if (injectedStyle) {
             injectedStyle.remove();
