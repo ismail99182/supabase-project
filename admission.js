@@ -71,10 +71,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const fatherName = document.getElementById('father-name').value;
                 const email = document.getElementById('student-email').value;
                 const mobileNumber = document.getElementById('mobile-number').value;
+                const campus = document.getElementById('campus').value; // NEW
+                const course = document.getElementById('course').value; // NEW
                 const gender = document.getElementById('gender').value;
                 const city = document.getElementById('city').value;
 
-                console.log("Submitting to Supabase:", { name, fatherName, email, mobileNumber, gender, city });
+                console.log("Submitting to Supabase:", { name, fatherName, email, mobileNumber, campus, course, gender, city });
 
                 // Supabase Data Insertion Request
                 // Note: Aapke table ka naam exact 'admisson data' (single 's') hai schema ke mutabiq
@@ -86,6 +88,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             father_name: fatherName,
                             email: email,
                             mobile_number: mobileNumber,
+                            campus: campus,   // NEW COLUMN IN DB
+                            course: course,   // NEW COLUMN IN DB
                             gender: gender,
                             city: city
                         }
@@ -112,6 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         alert("Fatal Error: Form ID 'admission-form' not found in HTML!");
     }
 });
+
 // ==========================================
 // SEARCH & GENERATE ID CARD LOGIC FROM DB
 // ==========================================
@@ -175,9 +180,6 @@ function resetSearchArea() {
     document.getElementById('search-card-container').classList.remove('hidden');
 }
 
-// ==========================================
-// 100% FIXED MOBILE & LAPTOP DOWNLOAD LOGIC
-// ==========================================
 // =======================================================
 // 100% FIXED NO-CUTTING NATIVE PRINT/SAVE SYSTEM
 // =======================================================
